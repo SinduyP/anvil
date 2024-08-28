@@ -1,0 +1,46 @@
+from ._anvil_designer import Form1Template
+from anvil import *
+import anvil.server
+
+
+class Form1(Form1Template):
+  def __init__(self, **properties):
+    # Thiết lập các thuộc tính Form và liên kết dữ liệu.
+    self.init_components(**properties)
+
+  def dec_to_bin_button_click(self, **event_args):
+    """Chuyển đổi từ thập phân sang nhị phân."""
+    decimal_str = self.input_box.text.strip()  # Loại bỏ khoảng trắng thừa
+    print(f"Decimal input: {decimal_str}")  # Kiểm tra đầu vào từ TextBox
+    
+    if not decimal_str:
+        self.result_label.text = "Vui lòng nhập một số thập phân."  # Sửa lại thông báo lỗi
+        print("No input provided.")  # Xác nhận khi không có đầu vào
+        return
+    try:
+        decimal_number = int(decimal_str)
+        binary_str = bin(decimal_number)[2:]  # Chuyển đổi số thập phân sang nhị phân
+        self.result_label.text = f"Số nhị phân: {binary_str}"
+    except ValueError:
+        self.result_label.text = "Vui lòng nhập một số thập phân hợp lệ."
+
+  def bin_to_dec_button_click(self, **event_args):
+    """Chuyển đổi từ nhị phân sang thập phân."""
+    binary_str = self.input_box.text.strip()  # Loại bỏ khoảng trắng thừa
+    
+    print(f"Binary input: {binary_str}")  # Kiểm tra đầu vào từ TextBox
+    
+    if not binary_str:
+        self.result_label.text = "Vui lòng nhập một số nhị phân."
+        print("No input provided.")  # Xác nhận khi không có đầu vào
+        return
+
+    try:
+        # Chuyển đổi chuỗi nhị phân sang số thập phân
+        decimal_number = int(binary_str, 2)
+        self.result_label.text = f"Số thập phân: {decimal_number}"
+        print(f"Converted to decimal: {decimal_number}")  # Kiểm tra giá trị chuyển đổi
+    except ValueError:
+        # Thông báo lỗi nếu nhập không hợp lệ
+        self.result_label.text = "Vui lòng nhập một số nhị phân hợp lệ."
+        print("Invalid binary input.")  # Xác nhận khi đầu vào không hợp lệ
